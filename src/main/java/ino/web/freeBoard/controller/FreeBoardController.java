@@ -3,6 +3,7 @@ package ino.web.freeBoard.controller;
 import ino.web.freeBoard.dto.FreeBoardDto;
 import ino.web.freeBoard.service.FreeBoardService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,8 +45,13 @@ public class FreeBoardController {
 	}
 
 	@RequestMapping("/freeBoardDetail.ino")
+	@ResponseBody
 	public ModelAndView freeBoardDetail(HttpServletRequest request){
-		return new ModelAndView("freeBoardDetail", "freeBoardDto", null);
+		int num = Integer.parseInt(request.getParameter("num"));
+		Map<String, Object> dMap = new HashMap<String, Object>();
+		dMap = freeBoardService.getDetailByNum(num);
+		System.err.println(dMap);
+		return new ModelAndView("freeBoardDetail", "freeBoardOne", dMap);
 	}
 
 	@RequestMapping("/freeBoardModify.ino")

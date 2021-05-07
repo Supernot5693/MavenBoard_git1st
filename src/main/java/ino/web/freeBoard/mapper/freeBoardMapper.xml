@@ -16,8 +16,8 @@
 		VALUES( #{codeType}, UPPER.NEXTVAL, #{title}, #{name}, SYSDATE, #{content})
 	</insert>
 
-	<select id="freeBoardDetailByNum" resultType="freeBoardDto" parameterType="int">
-		SELECT NUM, TITLE, NAME, TO_CHAR(REGDATE,'YYYY/MM/DD') REGDATE, CONTENT FROM FREEBOARD
+	<select id="freeBoardDetailByNum" resultType="Map" parameterType="int">
+		SELECT CODE_TYPE as codeType, NUM, TITLE, NAME, TO_CHAR(REGDATE,'YYYY/MM/DD') REGDATE, CONTENT FROM FREEBOARD
 		WHERE NUM=#{num}
 	</select>
 

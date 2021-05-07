@@ -32,7 +32,7 @@ public class FreeBoardService {
 		return iMap;
 	}
 
-	public FreeBoardDto getDetailByNum(int num){
+	public Map<String, Object> getDetailByNum(int num){
 		return sqlSessionTemplate.selectOne("freeBoardDetailByNum", num);
 	}
 

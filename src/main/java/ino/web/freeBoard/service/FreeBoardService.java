@@ -1,13 +1,13 @@
 package ino.web.freeBoard.service;
 
-import ino.web.freeBoard.dto.FreeBoardDto;
-
 import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import ino.web.freeBoard.dto.FreeBoardDto;
 
 @Service
 public class FreeBoardService {
@@ -40,13 +40,27 @@ public class FreeBoardService {
 		return sqlSessionTemplate.selectOne("freeBoardNewNum");
 	}
 
-	public void freeBoardModify(FreeBoardDto dto){
-		sqlSessionTemplate.update("freeBoardModify", dto);
+	public Map<String, Object> freeBoardModify(Map<String, Object> mMap){
+		
+		try {
+			sqlSessionTemplate.update("freeBoardModify",mMap);
+			mMap.put("result", "true");
+		} catch (Exception e) {
+			mMap.put("result", "false");
+		}
+		
+		return mMap;
 	}
 
 	public void FreeBoardDelete (int num) {
 		sqlSessionTemplate.delete("freeBoardDelete", num);
 
+	}
+	public List<Map<String, Object>> codeSelect(){
+		return sqlSessionTemplate.selectList("codeSelect");
+	}
+	public List<Map<String, Object>> typeSelect(){
+		return sqlSessionTemplate.selectList("typeSelect");
 	}
 
 }

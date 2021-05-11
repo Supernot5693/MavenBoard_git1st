@@ -26,15 +26,20 @@ public class FreeBoardController {
 	public ModelAndView main(HttpServletRequest request){
 		ModelAndView mav = new ModelAndView();
 		List<FreeBoardDto> list = freeBoardService.freeBoardList();
-
+		List<Map<String, Object>> cType = freeBoardService.codeSelect();
 		mav.setViewName("boardMain");
 		mav.addObject("freeBoardList",list);
+		mav.addObject("codeOne",cType);
 		return mav;
 	}
 
 	@RequestMapping("/freeBoardInsert.ino")
-	public String freeBoardInsert(){
-		return "freeBoardInsert";
+	public ModelAndView freeBoardInsert(){
+		ModelAndView mav = new ModelAndView();
+		List<Map<String, Object>> cType = freeBoardService.codeSelect();
+		mav.setViewName("freeBoardInsert");
+		mav.addObject("codeOne",cType);
+		return mav;
 	}
 
 	@RequestMapping("/freeBoardInsertPro.ino")
@@ -48,15 +53,23 @@ public class FreeBoardController {
 	@ResponseBody
 	public ModelAndView freeBoardDetail(HttpServletRequest request){
 		int num = Integer.parseInt(request.getParameter("num"));
-		Map<String, Object> dMap = new HashMap<String, Object>();
-		dMap = freeBoardService.getDetailByNum(num);
-		System.err.println(dMap);
-		return new ModelAndView("freeBoardDetail", "freeBoardOne", dMap);
+		Map<String, Object> dMap = freeBoardService.getDetailByNum(num);
+		List<Map<String, Object>> cType = freeBoardService.codeSelect();
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("freeBoardDetail");
+		mav.addObject("freeBoardOne", dMap);
+		mav.addObject("cType", cType);
+		return mav;
 	}
 
 	@RequestMapping("/freeBoardModify.ino")
-	public String freeBoardModify(HttpServletRequest request, FreeBoardDto dto){
-		return "redirect:/main.ino";
+	@ResponseBody
+	public Map<String, Object> freeBoardModify(HttpServletRequest request, @RequestParam Map<String, Object> mMap){
+		
+		System.out.println(mMap);
+		mMap = freeBoardService.freeBoardModify(mMap);
+		
+		return mMap;
 	}
 
 

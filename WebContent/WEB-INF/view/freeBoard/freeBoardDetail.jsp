@@ -8,11 +8,37 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 <script>
-	$(document).ready(function(){
-		if(${freeBoardOne.CODETYPE}==01)
-			
-			
+	$(document).load(function(){
+				
 	});
+	
+	function modify(){
+		var num = $("input[name=num]").val();
+		var params = $("#insertForm").serialize();
+		
+		console.log(num);
+		console.log(params);
+		$.ajax({
+			url: './freeBoardModify.ino',
+			data: params,
+			type: 'post',
+			success: function(result){
+				
+				var goToMain;
+				
+				if(result.result=='true'){
+					alert("수정성공");
+					
+					goToMain = confirm("")
+					
+					location = './main.ino';
+				} else{
+					alert("수정실패");
+					location = './freeBoardDetail.ino?num=' + num;
+				}
+			}
+		});
+	}
 </script>
 </head>
 <body>
@@ -25,7 +51,7 @@
 	</div>
 	<hr style="width: 600px">
 
-	<form name="insertForm">
+	<form name="insertForm" id="insertForm">
 		<input type="hidden" name="num" value="${freeBoardOne.NUM }" />
 		<table border="1">
 			<tbody>
@@ -33,9 +59,9 @@
 					<td style="width: 150px;" align="center">타입 :</td>
 					<td style="width: 400px;">
 						<select id="codeType" name="codeType">
-							<option value="01">자유</option>
-							<option value="02">익명</option>
-							<option value="03">QnA</option>
+							<c:forEach var="codeOne" items="${cType}">
+								<option value="${codeOne.CODE }"<c:if test="${freeBoardOne.CODETYPE==codeOne.CODE }">selected</c:if>>${codeOne.CODENAME }</option>
+							</c:forEach>
 						</select>
 					</td>
 				</tr>
@@ -56,7 +82,7 @@
 				<tr>
 					<td></td>
 					<td align="right">
-					<input type="button" value="수정" onclick="modify()">
+					<input type="button" value="수정" onclick="modify();">
 					<input type="button" value="삭제" onclick="location.href='./freeBoardDelete.ino?num=${freeBoardOne.NUM }'">
 					<input type="button" value="취소" onclick="location.href='./main.ino'">
 					&nbsp;&nbsp;&nbsp;

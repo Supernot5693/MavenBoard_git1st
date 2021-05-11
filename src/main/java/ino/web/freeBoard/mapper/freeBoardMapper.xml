@@ -10,6 +10,22 @@
 		SELECT decode(CODE_TYPE ,'01','자유','02','익명','03','QnA') as codeType, NUM, NAME, TITLE, CONTENT, TO_CHAR(REGDATE , 'YYYY/MM/DD') AS REGDATE FROM FREEBOARD
 		ORDER BY NUM DESC
 	</select>
+	
+	<select id="codeSelect" resultType="Map">
+		SELECT FK.CODE,FK.CODE_NAME CODENAME FROM CODEM PK,CODED FK
+		WHERE PK.GR_CODE = FK.GR_CODE
+		AND PK.GR_CODE = 'GR001'
+		AND PK.USE_YN = 'Y'
+		AND FK.USE_YN = 'Y'
+	</select>
+
+	<select id="typeSelect" resultType="Map">
+		SELECT FK.CODE CODE,FK.CODE_NAME CODENAME FROM CODEM PK,CODED FK
+		WHERE PK.GR_CODE = FK.GR_CODE
+		AND PK.GR_CODE = 'GR002'
+		AND PK.USE_YN = 'Y'
+		AND FK.USE_YN = 'Y'
+	</select>
 
 	<insert id="freeBoardInsertPro" parameterType="Map">
 		INSERT INTO FREEBOARD(CODE_TYPE, NUM, TITLE, NAME, REGDATE, CONTENT)
@@ -26,7 +42,7 @@
 		FROM FREEBOARD
 	</select>
 
-	<update id="freeBoardModify" parameterType="freeBoardDto">
+	<update id="freeBoardModify" parameterType="Map">
 		UPDATE FREEBOARD
 		SET TITLE = #{title}
 				, CONTENT = #{content}
